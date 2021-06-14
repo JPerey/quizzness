@@ -38,42 +38,36 @@ export default function App() {
   const [score,setScore] = useState(0);
   const [showAnswers, setShowAnswers] = useState(false);
   const [quizLength, setQuizLength] = useState(1);
-  const [quizCategory, setQuizCategory] = useState();
-  const [userQuizInfo, setUserQuizInfo] = useState({
-    quiz:[
-      quizCategory,
-      score],
-    newQuiz:[]
-
-
-
-  });
+  const [quizCategory, setQuizCategory] = useState(null);
+  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [userQuizInfo, setUserQuizInfo] = useState({});
   
 
   //this changes the quiz category, resets quiz question #
   const handleCategoryChange = (category) => {
+    console.log("category: ", category)
+    setQuizCategory(category);
     let newAPI_URL = `https://opentdb.com/api.php?amount=10&category=
     ${categoryMap[category]}&difficulty=easy&type=multiple`;
     console.log(newAPI_URL);
-    setQuizCategory(categoryMap.value[category]);
-    console.log("category: ", category);
-    console.log("quizCategory: ", quizCategory);
     setApiURL(newAPI_URL);
     setPage("quiz");
     setQuizLength(1);
     
   }
-
+  
+  console.log("quizCategory: ", quizCategory);
   //this takes answer chosen and checks if it is correct
-  const handleAnswer = (answer, quizCategory) =>{
+  const handleAnswer = (answer) =>{
     //check if answer is correct
       if(!showAnswers) {
         if(answer === questions[currentIndex].correct_answer){
           setScore(score + 1);
+          setCorrectAnswers(oldAnswers => [...oldAnswers, answer])
+          
         }
     }
-    setUserQuizInfo(quizCategory,4);
-    console.log("userQuizInfo : ", userQuizInfo);
+  console.log(correctAnswers);
   setShowAnswers(true);
 
   };
@@ -83,11 +77,27 @@ export default function App() {
     e.preventDefault();
 
     try {
-
+      storeResults();
     } catch(error){
       console.log(error);
     };
     handleSplash();
+  }
+
+  function storeResults() {
+    fetch("http://localhost:3001/api/quiz", {
+      method: "POST",
+      body: JSON.stringify({
+        score: `${(correctAnswers.length / questions.length * 100).toFixed(2)}%`,
+        quizCategory,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then(res => res.json())
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
   // this handles question change
@@ -109,10 +119,11 @@ export default function App() {
     setScore(0);
     setQuizLength(1);
     setShowAnswers(false);
+    setCorrectAnswers([]);
 
   }
 
-  useEffect(() =>{
+  useEffect(( category ) =>{
     function getAppData() {
     fetch(apiURL)
     .then(res => res.json())
