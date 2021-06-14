@@ -38,7 +38,18 @@ export default function App() {
   const [score,setScore] = useState(0);
   const [showAnswers, setShowAnswers] = useState(false);
   const [quizLength, setQuizLength] = useState(1);
-  const [useQuizInfo, setUserQuizInfo] = useState([{}]);
+  const [userQuizInfo, setUserQuizInfo] = useState({
+    quizzes:[{
+      category: "Entertainment: Television",
+      question: "In the TV show &quot;Cheers&quot;, Sam Malone was a former relief pitcher for which baseball team?",
+      correct_answer: "Boston Red Sox",
+
+    }, score],
+    newQuiz:{}
+
+
+
+  });
   
 
   //this changes the quiz category, resets quiz question #
