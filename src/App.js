@@ -40,7 +40,8 @@ export default function App() {
   const [quizLength, setQuizLength] = useState(1);
   const [quizCategory, setQuizCategory] = useState(null);
   const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [userQuizInfo, setUserQuizInfo] = useState({});
+  const [prevQuizzes, setPrevQuizzes] = useState([]);
+  const [state, setState] = useState({});
   
 
   //this changes the quiz category, resets quiz question #
@@ -84,8 +85,8 @@ export default function App() {
     handleSplash();
   }
 
-  function storeResults() {
-    fetch("http://localhost:3001/api/quiz", {
+  async function storeResults() {
+    const quiz = await fetch("http://localhost:3001/api/quiz", {
       method: "POST",
       body: JSON.stringify({
         score: `${(correctAnswers.length / questions.length * 100).toFixed(2)}%`,
@@ -96,9 +97,15 @@ export default function App() {
       }
     })
       .then(res => res.json())
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+      // .then(res => console.log(res))
+      // .catch(err => console.log(err))
+
+      setState({
+        quizzes: [...prevQuizzes, quiz]
+      });
   }
+
+  console.log("heres state: ", state);
 
   // this handles question change
   const handleNextQuestion = () => {
@@ -124,11 +131,11 @@ export default function App() {
   }
 
   useEffect(( category ) =>{
-    function getAppData() {
-    fetch(apiURL)
-    .then(res => res.json())
-    .then(data => {
-      const questions = data.results.map((question) =>
+    async function getAppData() {
+    const quizzes = await fetch(apiURL)
+    .then(res => res.json());
+      console.log("heres quizzes: ", quizzes);
+      const questions = quizzes.results.map((question) =>
       ({
         ...question,
         answers:[
@@ -138,7 +145,8 @@ export default function App() {
       
     }));
     setQuestions(questions);
-    });
+    setPrevQuizzes(quizzes);
+    
   }
   getAppData();
   }, [apiURL]);
