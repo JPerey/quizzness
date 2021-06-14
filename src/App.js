@@ -38,12 +38,12 @@ export default function App() {
   const [score,setScore] = useState(0);
   const [showAnswers, setShowAnswers] = useState(false);
   const [quizLength, setQuizLength] = useState(1);
-  const [category, setCategory] = useState();
+  const [quizCategory, setQuizCategory] = useState();
   const [userQuizInfo, setUserQuizInfo] = useState({
-    quiz:{
-      category,
-      score},
-    newQuiz:{}
+    quiz:[
+      quizCategory,
+      score],
+    newQuiz:[]
 
 
 
@@ -55,6 +55,9 @@ export default function App() {
     let newAPI_URL = `https://opentdb.com/api.php?amount=10&category=
     ${categoryMap[category]}&difficulty=easy&type=multiple`;
     console.log(newAPI_URL);
+    setQuizCategory(categoryMap.value[category]);
+    console.log("category: ", category);
+    console.log("quizCategory: ", quizCategory);
     setApiURL(newAPI_URL);
     setPage("quiz");
     setQuizLength(1);
@@ -62,16 +65,15 @@ export default function App() {
   }
 
   //this takes answer chosen and checks if it is correct
-  const handleAnswer = (answer, category) =>{
+  const handleAnswer = (answer, quizCategory) =>{
     //check if answer is correct
       if(!showAnswers) {
         if(answer === questions[currentIndex].correct_answer){
           setScore(score + 1);
         }
     }
-    setCategory(questions[currentIndex].category)
-    setUserQuizInfo(category,score)
-    console.log(userQuizInfo);
+    setUserQuizInfo(quizCategory,4);
+    console.log("userQuizInfo : ", userQuizInfo);
   setShowAnswers(true);
 
   };
@@ -115,9 +117,8 @@ export default function App() {
     fetch(apiURL)
     .then(res => res.json())
     .then(data => {
-      const questions = data.results.map((question, category) =>
+      const questions = data.results.map((question) =>
       ({
-        ...category,
         ...question,
         answers:[
           question.correct_answer,
