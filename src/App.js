@@ -38,13 +38,11 @@ export default function App() {
   const [score,setScore] = useState(0);
   const [showAnswers, setShowAnswers] = useState(false);
   const [quizLength, setQuizLength] = useState(1);
+  const [category, setCategory] = useState();
   const [userQuizInfo, setUserQuizInfo] = useState({
-    quizzes:[{
-      category: "Entertainment: Television",
-      question: "In the TV show &quot;Cheers&quot;, Sam Malone was a former relief pitcher for which baseball team?",
-      correct_answer: "Boston Red Sox",
-
-    }, score],
+    quiz:{
+      category,
+      score},
     newQuiz:{}
 
 
@@ -64,20 +62,29 @@ export default function App() {
   }
 
   //this takes answer chosen and checks if it is correct
-  const handleAnswer = (answer) =>{
+  const handleAnswer = (answer, category) =>{
     //check if answer is correct
       if(!showAnswers) {
         if(answer === questions[currentIndex].correct_answer){
           setScore(score + 1);
-          
-        }      
+        }
     }
+    setCategory(questions[currentIndex].category)
+    setUserQuizInfo(category,score)
+    console.log(userQuizInfo);
   setShowAnswers(true);
 
   };
 
   //final button on quiz. This takes in userQuizInfo and sends to MongoDB to make an entry. Also resets various states.
-  const handleSubmit = () => {
+  async function handleSubmit (e){
+    e.preventDefault();
+
+    try {
+
+    } catch(error){
+      console.log(error);
+    };
     handleSplash();
   }
 
@@ -108,8 +115,9 @@ export default function App() {
     fetch(apiURL)
     .then(res => res.json())
     .then(data => {
-      const questions = data.results.map((question) =>
+      const questions = data.results.map((question, category) =>
       ({
+        ...category,
         ...question,
         answers:[
           question.correct_answer,

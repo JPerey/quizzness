@@ -1,7 +1,7 @@
 import React from "react";
 
 const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit, 
-    showAnswers, quizLength, score, page, data: {question, correct_answer, answers}}) => {
+    showAnswers, quizLength, score, page, category, data: {question, correct_answer, answers}}) => {
 
     return(
     <div>
@@ -15,7 +15,7 @@ const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit,
             <h3>Question # { quizLength }</h3>
         { answers.map( (answer, idx) => {
           return(
-          <button key={ idx } onClick= {() => handleAnswer(answer)} dangerouslySetInnerHTML={{ __html:answer}}/>
+          <button key={ idx } onClick= {() => handleAnswer(answer, category)} dangerouslySetInnerHTML={{ __html:answer}}/>
         )})}
         </div>
         
