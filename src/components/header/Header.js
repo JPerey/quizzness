@@ -16,12 +16,6 @@ const Header = ({ handlePrevious, handleSplash }) => {
           <button onClick={ handleSplash } className="navbar-item button is-medium is-ghost">Create a Quiz</button>
       </div>
       <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-dark" >Github </a>
-            <a class="button is-link">Download</a>
-          </div>
-        </div>
       </div>
     </div>
   </div>
