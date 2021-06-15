@@ -4,9 +4,11 @@ const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit,
     showAnswers, quizLength, page, category, correctAnswers, data: {question, answers}}) => {
 
     return(
-    <div>
+    <div className= "">
+    <div className= "">
+    <div className= "">
         {page==="quiz" ? (
-    <div>
+    <div >
         <div>
           <h2 dangerouslySetInnerHTML={{ __html:question}}/>
         </div>
@@ -44,7 +46,9 @@ const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit,
         <div></div>
       )
       }
-      </div>
+    </div>
+    </div>
+    </div>
     )}
 
 export default QuizScreen;

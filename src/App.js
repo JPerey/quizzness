@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Header from "./components/Header";
+import Header from "./components/header/Header";
 import QuizScreen from "./components/QuizScreen";
 import Footer from "./components/Footer";
 import QuizSelection from "./components/QuizSelection";
@@ -149,11 +149,12 @@ console.log("quiz category from MONGODB: ", quizCategory);
 // rendering section
   return(
 
-<div className= "Container">
-<Header handlePrevious = { handlePrevious } handleSplash = { handleSplash }/>
+<section className= " hero is-info is-fullheight has-navbar-fixed-top">
+<Header className="hero-head" handlePrevious = { handlePrevious } handleSplash = { handleSplash }/>
   
   {questions.length >0 ? (
-    <div className="App">
+    <div className="hero-body">
+      
       <Previous page = { page }  allQuizzes = { allQuizzes }/>
 
       <QuizSelection page = { page } categoryMap= { categoryMap } handleCategoryChange = { handleCategoryChange } />
@@ -161,16 +162,17 @@ console.log("quiz category from MONGODB: ", quizCategory);
       <QuizScreen page = { page } showAnswers = { showAnswers } data = { questions[currentIndex] } 
        handleAnswer = { handleAnswer } handleNextQuestion = { handleNextQuestion } 
        handleSubmit = { handleSubmit } quizLength = { quizLength }  correctAnswers = { correctAnswers }/>
-
-      <Footer />
-
+      
     </div>
+
+      
     
   ) : (
     <h2>Loading questions</h2>
   )
   }
-  </div>
+  <Footer className= " hero-foot "/>
+  </section>
   )
 
   
