@@ -1,7 +1,7 @@
 import React from "react";
 
 const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit, 
-    showAnswers, quizLength, page, category, correctAnswers, data: {question, correct_answer, answers}}) => {
+    showAnswers, quizLength, page, category, correctAnswers, data: {question, answers}}) => {
 
     return(
     <div>

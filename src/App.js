@@ -43,33 +43,29 @@ export default function App() {
 
   //this changes the quiz category, resets quiz question #
   const handleCategoryChange = (category) => {
-    console.log("category: ", category)
     setQuizCategory(category);
     let newAPI_URL = `https://opentdb.com/api.php?amount=10&category=
     ${categoryMap[category]}&difficulty=easy&type=multiple`;
-    console.log(newAPI_URL);
     setApiURL(newAPI_URL);
     setPage("quiz");
     setQuizLength(1);
     
   }
   
-  console.log("quizCategory: ", quizCategory);
   //this takes answer chosen and checks if it is correct
   const handleAnswer = (answer) =>{
-    //check if answer is correct
+    //checks if answer is correct
       if(!showAnswers) {
         if(answer === questions[currentIndex].correct_answer){
           setCorrectAnswers(oldAnswers => [...oldAnswers, answer])
           
         }
     }
-  console.log(correctAnswers);
   setShowAnswers(true);
 
   };
 
-  //final button on quiz. This takes in userQuizInfo and sends to MongoDB to make an entry. Also resets various states.
+  //final button on quiz. This tries storeResults and handleSplash
    const handleSubmit= (e) => {
     e.preventDefault();
 
@@ -81,8 +77,9 @@ export default function App() {
     handleSplash();
   }
 
+  //method to store quiz into MONGODB
   async function storeResults() {
-    const quiz = await fetch("http://localhost:3001/api/quiz", {
+    const quiz = await fetch("https://quizzness-backend.herokuapp.com/api/quiz", {
       method: "POST",
       body: JSON.stringify({
         score: `${(correctAnswers.length / questions.length * 100).toFixed(2)}%`,
@@ -93,8 +90,6 @@ export default function App() {
       }
     })
       .then(res => res.json())
-      // .then(res => console.log(res))
-      // .catch(err => console.log(err))
 
       setAllQuizzes([...allQuizzes, quiz]
       );
@@ -123,19 +118,14 @@ export default function App() {
 
   }
 
-  useEffect(( category ) =>{
+  useEffect(() =>{
     async function getAppData() {
     const quizzes = await fetch(apiURL)
     .then(res => res.json());
-      console.log("heres quizzes: ", quizzes);
       
-    const prevQuizzesArray = await fetch("http://localhost:3001/api/quiz")
+    const prevQuizzesArray = await fetch("https://quizzness-backend.herokuapp.com/api/quiz")
     .then(res => res.json());
-    
     setAllQuizzes(prevQuizzesArray);
-    // setState({
-    //   quizzes: [...allQuizzes]
-    // });
 
       const questions = quizzes.results.map((question) =>
       ({
@@ -148,28 +138,29 @@ export default function App() {
     }));
     setQuestions(questions);
 
-    
-    
   }
   getAppData();
   }, [apiURL]);
-console.log(apiURL);
+
+//console.log section
+console.log("current apiURL: ", apiURL);
+console.log("quiz category from MONGODB: ", quizCategory);
 
 // rendering section
   return(
 
-<div>
+<div className= "Container">
 <Header handlePrevious = { handlePrevious } handleSplash = { handleSplash }/>
   
   {questions.length >0 ? (
     <div className="App">
       <Previous page = { page }  allQuizzes = { allQuizzes }/>
 
-      <QuizSelection categoryMap= { categoryMap } handleCategoryChange = { handleCategoryChange } page = { page }/>
+      <QuizSelection page = { page } categoryMap= { categoryMap } handleCategoryChange = { handleCategoryChange } />
 
-      <QuizScreen showAnswers = { showAnswers } data = { questions[currentIndex] } 
+      <QuizScreen page = { page } showAnswers = { showAnswers } data = { questions[currentIndex] } 
        handleAnswer = { handleAnswer } handleNextQuestion = { handleNextQuestion } 
-       handleSubmit = { handleSubmit } quizLength = { quizLength } page = { page } correctAnswers = { correctAnswers }/>
+       handleSubmit = { handleSubmit } quizLength = { quizLength }  correctAnswers = { correctAnswers }/>
 
       <Footer />
 
