@@ -148,9 +148,9 @@ console.log("quiz category from MONGODB: ", quizCategory);
 
 // rendering section
   return(
-
+<div className = "container is-widescreen">
 <section className= " hero is-info is-fullheight has-navbar-fixed-top">
-<Header className="hero-head" handlePrevious = { handlePrevious } handleSplash = { handleSplash }/>
+<Header className="section hero-head" handlePrevious = { handlePrevious } handleSplash = { handleSplash }/>
   
   {questions.length >0 ? (
     <div className="hero-body">
@@ -173,6 +173,7 @@ console.log("quiz category from MONGODB: ", quizCategory);
   }
   <Footer className= " hero-foot "/>
   </section>
+  </div>
   )
 
   

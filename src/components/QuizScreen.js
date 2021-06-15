@@ -1,7 +1,7 @@
 import React from "react";
 
 const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit, 
-    showAnswers, quizLength, page, category, correctAnswers, data: {question, answers}}) => {
+    showAnswers, quizLength, page, category, correctAnswers, data: {question, answers, correct_answer}}) => {
 
     return(
     <div className= "">
@@ -16,8 +16,11 @@ const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit,
         <div>
             <h3>Question # { quizLength }</h3>
         { answers.map( (answer, idx) => {
+            const bgColor = showAnswers ? answer === correct_answer ? "button is-success" : "button is-danger" : "button is-warning";
+            //const textColor = showAnswers ? "text-white" : "text-purple-800";
           return(
-          <button key={ idx } onClick= {() => handleAnswer(answer, category)} dangerouslySetInnerHTML={{ __html:answer}}/>
+          <button key={ idx } className= {` ${ bgColor } `}
+           onClick= {() => handleAnswer(answer, category)} dangerouslySetInnerHTML={{ __html:answer}}/>
         )})}
         </div>
         

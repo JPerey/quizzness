@@ -4,23 +4,23 @@ import moment from "moment";
 const Previous = ({ page, allQuizzes}) => {
     const format1 = "YYYY-MM-DD HH:mm";
     return(
-        <div>
+        <div >
             {page === "previous" ? (
-                <div>
+                <div className = "section">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Category</th>
-                                <th>Score</th>
+                            <tr className= " level ">
+                                <th className=" column content is-medium is-offset-7">Date</th>
+                                <th className=" column content is-medium is-offset-7">Category</th>
+                                <th className=" column content is-medium is-offset-5">Score</th>
                             </tr>
                         </thead>
                         <tbody>
                             {allQuizzes.map((quiz, idx) => (
-                            <tr key={ idx }>
-                                <th>{ moment(quiz.createdAt.toString()).format(format1) }</th>
-                                <th>{ quiz.quizCategory }</th>
-                                <th>{ quiz.score }</th>
+                            <tr key={ idx } className= " level ">
+                                <th className=" column is-half is-offset-5 ">{ moment(quiz.createdAt.toString()).format(format1) }</th>
+                                <th className=" column is-one-quarter is-offset-5">{ quiz.quizCategory }</th>
+                                <th className=" column is-one-quarter is-offset-5">{ quiz.score }</th>
                                 </tr>
                             ))}
                         </tbody>
