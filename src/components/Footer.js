@@ -4,7 +4,7 @@ const Footer = () => {
 
     return (
         <div>
-            <p>Copyright 2021: Quizz-Topia</p>
+            <p>Copyright 2021: Quizzness</p>
         </div>
     )
 }

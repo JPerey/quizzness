@@ -1,7 +1,7 @@
 import React from "react";
 
 const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit, 
-    showAnswers, quizLength, score, page, category, data: {question, correct_answer, answers}}) => {
+    showAnswers, quizLength, page, category, correctAnswers, data: {question, correct_answer, answers}}) => {
 
     return(
     <div>
@@ -24,7 +24,8 @@ const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit,
             <div>
                 {quizLength === 10 ? (
                     <div>
-                        <p>Quiz finished! Your score is { score }</p>
+                        <h2>Correct Answers: {correctAnswers.length}</h2>
+                        <h2>Out Of: { quizLength }</h2>
                     <button onClick={ handleSubmit }>Submit Quiz</button>
                     </div>
                 ): (

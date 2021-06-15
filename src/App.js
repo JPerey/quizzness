@@ -35,14 +35,12 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [page,setPage] = useState("splash");
   const [apiURL, setApiURL] = useState("https://opentdb.com/api.php?amount=10&category=14&difficulty=easy&type=multiple");
-  const [score,setScore] = useState(0);
+  //const [score,setScore] = useState(0);
   const [showAnswers, setShowAnswers] = useState(false);
   const [quizLength, setQuizLength] = useState(1);
+  const [allQuizzes, setAllQuizzes] = useState([]);
   const [quizCategory, setQuizCategory] = useState(null);
   const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [prevQuizzes, setPrevQuizzes] = useState([]);
-  const [state, setState] = useState({});
-  
 
   //this changes the quiz category, resets quiz question #
   const handleCategoryChange = (category) => {
@@ -63,7 +61,7 @@ export default function App() {
     //check if answer is correct
       if(!showAnswers) {
         if(answer === questions[currentIndex].correct_answer){
-          setScore(score + 1);
+          //setScore(score + 1);
           setCorrectAnswers(oldAnswers => [...oldAnswers, answer])
           
         }
@@ -74,7 +72,7 @@ export default function App() {
   };
 
   //final button on quiz. This takes in userQuizInfo and sends to MongoDB to make an entry. Also resets various states.
-  async function handleSubmit (e){
+   const handleSubmit= (e) => {
     e.preventDefault();
 
     try {
@@ -100,12 +98,9 @@ export default function App() {
       // .then(res => console.log(res))
       // .catch(err => console.log(err))
 
-      setState({
-        quizzes: [...prevQuizzes, quiz]
-      });
+      setAllQuizzes([...allQuizzes, quiz]
+      );
   }
-
-  console.log("heres state: ", state);
 
   // this handles question change
   const handleNextQuestion = () => {
@@ -116,14 +111,18 @@ export default function App() {
   }
 
   // changes page to previous quizzes page
-  const handlePrevious = () => {
+  async function handlePrevious() {
     setPage("previous");
+
+    // const prevQuizzesArray = await fetch("http://localhost:3001/api/quiz")
+    // .then(res => res.json());
+    // console.log("heres state: ", state);
+    // setPrevQuizzes(prevQuizzesArray);
   }
 
   const handleSplash = () => {
     setPage("splash");
     setCurrentIndex(0);
-    setScore(0);
     setQuizLength(1);
     setShowAnswers(false);
     setCorrectAnswers([]);
@@ -135,6 +134,15 @@ export default function App() {
     const quizzes = await fetch(apiURL)
     .then(res => res.json());
       console.log("heres quizzes: ", quizzes);
+      
+    const prevQuizzesArray = await fetch("http://localhost:3001/api/quiz")
+    .then(res => res.json());
+    
+    setAllQuizzes(prevQuizzesArray);
+    // setState({
+    //   quizzes: [...allQuizzes]
+    // });
+
       const questions = quizzes.results.map((question) =>
       ({
         ...question,
@@ -145,7 +153,8 @@ export default function App() {
       
     }));
     setQuestions(questions);
-    setPrevQuizzes(quizzes);
+
+    
     
   }
   getAppData();
@@ -160,21 +169,20 @@ console.log(apiURL);
   
   {questions.length >0 ? (
     <div className="App">
-      <Previous page = { page } />
+      <Previous page = { page }  allQuizzes = { allQuizzes }/>
 
       <QuizSelection categoryMap= { categoryMap } handleCategoryChange = { handleCategoryChange } page = { page }/>
 
       <QuizScreen showAnswers = { showAnswers } data = { questions[currentIndex] } 
        handleAnswer = { handleAnswer } handleNextQuestion = { handleNextQuestion } 
-       handleSubmit = { handleSubmit } quizLength = { quizLength } 
-       score = { score } page = { page }/>
+       handleSubmit = { handleSubmit } quizLength = { quizLength } page = { page } correctAnswers = { correctAnswers }/>
 
       <Footer />
 
     </div>
     
   ) : (
-    <h2 className=" text-2xl">Loading questions</h2>
+    <h2>Loading questions</h2>
   )
   }
   </div>
