@@ -35,7 +35,6 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [page,setPage] = useState("splash");
   const [apiURL, setApiURL] = useState("https://opentdb.com/api.php?amount=10&category=14&difficulty=easy&type=multiple");
-  //const [score,setScore] = useState(0);
   const [showAnswers, setShowAnswers] = useState(false);
   const [quizLength, setQuizLength] = useState(1);
   const [allQuizzes, setAllQuizzes] = useState([]);
@@ -61,7 +60,6 @@ export default function App() {
     //check if answer is correct
       if(!showAnswers) {
         if(answer === questions[currentIndex].correct_answer){
-          //setScore(score + 1);
           setCorrectAnswers(oldAnswers => [...oldAnswers, answer])
           
         }
@@ -114,10 +112,6 @@ export default function App() {
   async function handlePrevious() {
     setPage("previous");
 
-    // const prevQuizzesArray = await fetch("http://localhost:3001/api/quiz")
-    // .then(res => res.json());
-    // console.log("heres state: ", state);
-    // setPrevQuizzes(prevQuizzesArray);
   }
 
   const handleSplash = () => {

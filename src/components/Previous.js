@@ -1,6 +1,8 @@
 import React from "react";
+import moment from "moment";
 
 const Previous = ({ page, allQuizzes}) => {
+    const format1 = "YYYY-MM-DD HH:mm";
     return(
         <div>
             {page === "previous" ? (
@@ -16,7 +18,7 @@ const Previous = ({ page, allQuizzes}) => {
                         <tbody>
                             {allQuizzes.map((quiz, idx) => (
                             <tr key={ idx }>
-                                <th>{ quiz.createdAt }</th>
+                                <th>{ moment(quiz.createdAt.toString()).format(format1) }</th>
                                 <th>{ quiz.quizCategory }</th>
                                 <th>{ quiz.score }</th>
                                 </tr>
