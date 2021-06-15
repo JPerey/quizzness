@@ -10,7 +10,7 @@ const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit,
         {page==="quiz" ? (
     <div >
         <div>
-          <h2 dangerouslySetInnerHTML={{ __html:question}}/>
+          <h2 className = "title" dangerouslySetInnerHTML={{ __html:question}}/>
         </div>
 
         <div>
@@ -31,10 +31,10 @@ const QuizScreen = ({ handleAnswer , handleNextQuestion, handleSubmit,
                     <div>
                         <h2>Correct Answers: {correctAnswers.length}</h2>
                         <h2>Out Of: { quizLength }</h2>
-                    <button onClick={ handleSubmit }>Submit Quiz</button>
+                    <button className = "button is-warning " onClick={ handleSubmit }>Submit Quiz</button>
                     </div>
                 ): (
-                    <button onClick={ handleNextQuestion }>Next Question</button>
+                    <button className = "button is-warning " onClick={ handleNextQuestion }>Next Question</button>
                 )
             }
             </div>
