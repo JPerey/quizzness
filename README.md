@@ -19,6 +19,8 @@ A fun, little SPA that allows a user to test their wits
 
 ![wireframe](./public/wireframe2.png)
 
+![wireframe](./public/ERDquizzness.png)
+
 
 ## Getting Started
 
