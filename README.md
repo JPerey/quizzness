@@ -12,6 +12,7 @@ A fun, little SPA that allows a user to test their wits
 - Netlify
 - JSX
 - OpenTDB API
+- moment.js
 
 ## WireFrames
 
